@@ -1,6 +1,6 @@
 # Replication materials for:  The Crowd Classification Problem
-Joshua Becker (Kellogg School of Management, Northwestern Institute on Complex Systems, Northwestern University)
-Douglas Guilbeault (Annenberg School of Communication, University of Pennsylvania)
+Joshua Becker (Kellogg School of Management, Northwestern Institute on Complex Systems, Northwestern University) 
+Douglas Guilbeault (Annenberg School of Communication, University of Pennsylvania) 
 Ned Smith (Kellogg School of Management, Northwestern Institute on Complex Systems, Northwestern University)
 
 # Contents
