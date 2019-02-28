@@ -35,7 +35,7 @@ table(ag$question)
 table(ag$questionSet)
 
 ### THEORETICAL OVERLAY
-outcomes=read.csv("../Modeling & Power Tests/simulation_outcomes_k10.csv")
+outcomes=read.csv("simulation_outcomes_k10.csv")
 outcomes$change_accuracy = outcomes$final_accuracy - outcomes$initial_accuracy 
 outcomes$expected_accuracy = round(outcomes$expected_accuracy,2)
 outcomes$did_improve = factor(outcomes$change_accuracy>0)
