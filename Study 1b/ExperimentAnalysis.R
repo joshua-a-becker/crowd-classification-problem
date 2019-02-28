@@ -6,7 +6,7 @@ require(xtable)
 source("https://raw.githubusercontent.com/joshua-a-becker/RTools/master/beckerfunctions.R")
 
 
-d = read.csv("Data/discrete-data.csv", stringsAsFactors=F) %>% mutate(
+d = read.csv("Study1bData.csv", stringsAsFactors=F) %>% mutate(
     correct_1 = response_1 == correctAnswer
   , correct_2 = response_2 == correctAnswer
   , correct_3 = response_3 == correctAnswer

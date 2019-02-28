@@ -1,6 +1,6 @@
 rm(list=ls());gc()
 library(ggplot2)
-source('03_CI-Binary-From-Continuous.R', echo=TRUE)
+source('SimulationFunctions.R', echo=TRUE)
 
 
 ### FIXED PARAMETERS
