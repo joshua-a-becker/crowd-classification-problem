@@ -10,20 +10,21 @@ source("https://raw.githubusercontent.com/joshua-a-becker/RTools/master/beckerfu
 ### PREP EXPEIRMENTAL DATA ###
 ##############################
 
-d = read.csv("Study1bData.csv", stringsAsFactors=F) %>% mutate(
-  correct_1 = response_1 == correctAnswer
-  , correct_2 = response_2 == correctAnswer
-  , correct_3 = response_3 == correctAnswer
-  , is.valid = !is.na(response_1) & !is.na(response_2) & !is.na(response_3)
-) %>% mutate(
-  questionSet = NA  
-) %>% mutate_when(
-  grepl("cola", question), list(questionSet = "Pepsi vs Coke")
-  , grepl("candies", question), list(questionSet = "Candies")
-  , grepl("employ", question), list(questionSet = "Employment")
-  , grepl("tech", question), list(questionSet = "Technology")
-  , grepl("dessert", question), list(questionSet = "Calories")
-)
+d = read.csv("Becker Guilbeault Smith - Crowd Classification Problem - Study 1b - Data.csv", stringsAsFactors=F) %>%
+  mutate(
+    correct_1 = response_1 == correctAnswer
+    , correct_2 = response_2 == correctAnswer
+    , correct_3 = response_3 == correctAnswer
+    , is.valid = !is.na(response_1) & !is.na(response_2) & !is.na(response_3)
+  ) %>% mutate(
+    questionSet = NA  
+  ) %>% mutate_when(
+    grepl("cola", question), list(questionSet = "Pepsi vs Coke")
+    , grepl("candies", question), list(questionSet = "Candies")
+    , grepl("employ", question), list(questionSet = "Employment")
+    , grepl("tech", question), list(questionSet = "Technology")
+    , grepl("dessert", question), list(questionSet = "Calories")
+  )
 
 ### AGGREGATE BY TRIAL
 

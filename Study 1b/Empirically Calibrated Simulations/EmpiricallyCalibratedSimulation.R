@@ -15,7 +15,7 @@ outcomes = data.frame(  initial_accuracy=numeric()
 
 reps=1000
 N=20
-k=10
+k=19
 probs=seq(0,1,by=0.05)
 total = reps*length(probs)
 pb=txtProgressBar(0,total,style=3)
@@ -36,4 +36,4 @@ for(i in 1:reps) {
 close(pb)
 
 
-write.csv(outcomes, "simulation_outcomes_k10.csv")
+write.csv(outcomes, "simulation_outcomes.csv")

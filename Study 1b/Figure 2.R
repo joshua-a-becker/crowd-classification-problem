@@ -2,7 +2,7 @@ source("Study 1b - Prep Data.R")
 
 
 ### LOAD SIMUALTION OUTCOMES
-outcomes=read.csv("simulation_outcomes_k10.csv") %>%
+outcomes=read.csv("Empirically Calibrated Simulations/simulation_outcomes.csv") %>%
   mutate(
       change_accuracy = final_accuracy - initial_accuracy 
     , expected_accuracy = round(expected_accuracy,2)
