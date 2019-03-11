@@ -1,3 +1,4 @@
+rm(list=ls());gc()
 source("Study 1b - Prep Data.R")
 
 

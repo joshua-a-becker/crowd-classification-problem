@@ -80,7 +80,7 @@ ggplot(d_sum, aes(x=p, y=change, color=initially_accurate)) +
   geom_line() +
   #facet_grid(.~dataset) +
   beckertheme +
-  scale_color_manual(values = c("black","red")) +
+  scale_color_manual(values = c("black","blue")) +
   labs(y="Change in Percent Correct", x="Threshold as Percentile", color="") +
   guides(color=F) +
   geom_hline(yintercept=0, linetype="dashed") +
