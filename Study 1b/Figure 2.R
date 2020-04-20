@@ -2,7 +2,7 @@ rm(list=ls());gc()
 source("Study 1b - Prep Data.R")
 
 
-### LOAD SIMUALTION OUTCOMES
+### LOAD SIMULATION OUTCOMES
 outcomes=read.csv("Empirically Calibrated Simulations/simulation_outcomes.csv") %>%
   mutate(
       change_accuracy = final_accuracy - initial_accuracy 
@@ -23,8 +23,46 @@ model_sum = subset(outcomes, maj_size<0.5) %>%
     , change_accuracy=mean(change_accuracy)
   )
 
+lookup = function(x1){
+  unlist(sapply(x1, function(x){model_sum$change_accuracy[model_sum$initial_accuracy==(round(x*2,1)/2)]}))
+}
 
+ag = ag %>%
+  mutate(
+    predict=lookup(correct_1)
+  )
 
+SS_tot = sum((ag$change_13-mean(ag$change_13))^2)
+SS_reg=sum((ag$predict-mean(ag$change_13))^2)
+
+R2 = SS_reg/SS_tot
+
+ggplot(ag, aes(y=change_13,x=correct_1)) +
+         geom_point() +
+  geom_smooth(method='lm', formula= y~x) +
+  geom_hline(yintercept=0)+
+  geom_vline(xintercept=0.5)
+       
+mod=lm(change_13 ~ correct_1, ag)
+
+sum((mod$fitted.values-mean(ag$change_13))^2)
+sum((ag$change_13-mean(ag$change_13))^2)
+
+summary(mod)
+
+get_R2= function(span){
+  sapply(span, function(sp){
+    lmod = loess(change_13 ~ correct_1, data=ag, span=sp)
+    R2=sum((lmod$fitted-mean(ag$change_13))^2)/sum((ag$change_13-mean(ag$change_13))^2)
+    R2    
+  })%>%unlist
+}
+
+get_R2(0.8)
+
+summary(mod)$r.squared
+
+summary(lmod)
 
 xlabs=paste0(seq(0,100,by=025),"%")
 ylabs=paste0(seq(-50,50,by=25),"%")
@@ -39,7 +77,7 @@ ggplot() +
   stat_smooth(data=ag
               , aes(x=correct_1
                     , y=change_13
-              ), color="#e41a1c", span=0.9, size=0.5, method="loess", fill=NA
+              ), color="#e41a1c", span=0.8, size=0.5, method="loess", fill=NA
   ) +
   geom_point(data=empirical_sum %>% arrange(desc(N))
              , aes(x=initial_accuracy
