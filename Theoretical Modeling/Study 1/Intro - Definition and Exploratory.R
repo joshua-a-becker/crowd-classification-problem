@@ -73,14 +73,15 @@ population = data.frame(signal=signal,
 ### CORRELATE CONFIDENCE WITH PROBABILITY OF BEING CORRECT
 ggplot(population, 
        aes(x=confidence, y=belief)) +
-  stat_summary(fun.y="mean", geom="point") + joshtheme +
+  stat_summary(fun.y="mean", geom="point") + theme_test() +
   labs(x="Confidence",y="Proportion Correct")
 
 
 ### CORRELATE THRESHOLD  WITH PROBABILITY OF BEING CORRECT
 ggplot(data.frame(correct=ifelse(belief,1,0), threshold=threshold), 
        aes(x=threshold, y=correct)) +
-  stat_summary(fun.y="mean", geom="point")
+  stat_summary(fun.y="mean", geom="point") +
+  theme_test()
 
 
 
