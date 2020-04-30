@@ -1,7 +1,7 @@
 rm(list=ls());gc();
 library(readxl)
 library(httr)
-library(dplyr)
+library(tidyverse)
 library(ggplot2)
 
 source("https://raw.githubusercontent.com/joshua-a-becker/RTools/master/beckerfunctions.R")
