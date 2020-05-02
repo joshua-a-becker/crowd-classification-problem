@@ -3,7 +3,7 @@
 ###    P(CHANGE | SOCIAL INFO)
 library(igraph)
 
-source("https://raw.githubusercontent.com/joshua-a-becker/RTools/master/beckerfunctions.R")
+source("../../dependencies.R")
 source('SimulationFunctions.R', echo=TRUE)
 
 outcomes = data.frame(  initial_accuracy=numeric()
