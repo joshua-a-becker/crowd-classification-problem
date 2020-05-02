@@ -8,7 +8,7 @@ library(ggplot2)
 ### useful tools
 source("../dependencies.R")
 
-d = read.csv("Becker Guilbeault Smith - Crowd Classification Problem - Pilot Data .csv", stringsAsFactors=F) %>%
+d = read.csv("Crowd Classification Problem - Pilot Data .csv", stringsAsFactors=F) %>%
   mutate(
     initially_correct = response_1=="More than 350"
   , switch = ifelse(response_1==response_3, "stay","switch")

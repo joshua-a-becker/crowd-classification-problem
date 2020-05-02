@@ -12,7 +12,7 @@ source("../dependencies.R")
 ### PREP EXPEIRMENTAL DATA ###
 ##############################
 
-d = read.csv("Becker Guilbeault Smith - Crowd Classification Problem - Main Experiment Data.csv", stringsAsFactors=F) %>%
+d = read.csv("Crowd Classification Problem - Main Experiment Data.csv", stringsAsFactors=F) %>%
   mutate(
     correct_1 = response_1 == correctAnswer
     , correct_2 = response_2 == correctAnswer
