@@ -1,4 +1,9 @@
-source("Study 1b - Prep Data.R")
+### TO USE:
+### SET WORKING DIRECTORY TO SOURCE FILE LOCATION
+
+rm(list=ls());gc()
+library(tidyverse)
+source("Main Experiment - Prep Data.R")
 
 ### descriptive stats
 xtab=empirical_sum %>%

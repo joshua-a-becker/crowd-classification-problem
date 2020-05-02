@@ -39,6 +39,8 @@ model_sum = subset(outcomes, maj_size<0.5) %>%
 
 
 ### PREPARE FIGURE 2
+xlabs=paste0(seq(0,100,by=025),"%")
+ylabs=paste0(seq(-50,50,by=25),"%")
 ggplot() + 
   geom_line(data=model_sum %>% subset(overfit==F)
             , color="black"
@@ -97,9 +99,9 @@ ggplot() +
          , y="Change in Accuracy\n(Positive = More Accurate)"
          , size="Number of Outcomes") +
   scale_linetype_manual(
-    values=c("solid","dashed")
+    values=c("solid","dotted")
     ,labels=c("Omitted","Included")
   )+
   neat_theme
 
-ggsave("Figure A4.png", width=6.5, height=2.5)
+ggsave("Figure A4.png", width=5.5, height=2.5)

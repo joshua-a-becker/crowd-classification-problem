@@ -1,3 +1,5 @@
+require(ggplot2)
+
 neat_theme =   theme(panel.background=element_rect(fill="white", color="black", size=1.1), 
                       axis.text=element_text(size=rel(1), color="black"), 
                       strip.text=element_text(size=rel(1.1)), 
