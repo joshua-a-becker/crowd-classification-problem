@@ -1,5 +1,4 @@
-source("https://raw.githubusercontent.com/joshua-a-becker/RTools/master/beckerfunctions.R")
-
+source("../../dependencies.R")
 
 
 fs=list.files("Sims")
@@ -61,7 +60,7 @@ outcomes %>%
                       lim=c(0,1)
   ) +
   facet_grid(.~EN) +
-  beckertheme
+  neat_theme
 
 
 ggsave("DeGroot Model - Numeric Calculations.png"
