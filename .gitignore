@@ -2,3 +2,4 @@ Thumbs.db
 *.png
 *.RHistory
 Exclude/
+*.csv
