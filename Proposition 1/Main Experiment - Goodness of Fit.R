@@ -73,7 +73,31 @@ R2_overfit = 1 - (SS_res_overfit/SS_tot)
 R2_poly = 1 - (SS_res_poly/SS_tot)
 
 
+### R2
 R2_linear
 R2_prereg
 R2_overfit
 R2_poly
+
+### MSE
+SS_res_prereg
+SS_res_overfit
+SS_res_linear
+SS_res_poly
+
+
+MSE = c(
+  SS_res_linear
+  ,SS_res_prereg
+  ,SS_res_overfit
+  ,SS_res_poly
+)
+
+R2 = c(
+  R2_linear
+  ,R2_prereg
+  ,R2_overfit
+  ,R2_poly
+)
+
+plot(MSE, R2)
