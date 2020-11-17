@@ -17,11 +17,11 @@ library(igraph)
 source("dependencies.R")
 
 # Loading the simulation functions
-source('Analysis/Proposition 1/Empirically Calibrated Simulations/SimulationFunctions.R', echo=TRUE)
+source('Simulations/Empirically Calibrated Simulations/SimulationFunctions.R', echo=TRUE)
 
-############################
-# Creating the simulations #
-############################
+###########################
+# Running the simulations #
+###########################
 
 outcomes = data.frame(  initial_accuracy=numeric()
                       , final_accuracy=numeric()
@@ -37,7 +37,7 @@ probs=seq(0,1,by=0.05)
 total = reps*length(probs)
 pb=txtProgressBar(0,total,style=3)
 
-filename = paste0("Analysis/Proposition 1/Empirically Calibrated Simulations/empirical_sim_",sample(10000000,1),".csv")
+filename = paste0("Simulations/Empirically Calibrated Simulations/empirical_sim_",sample(10000000,1),".csv")
 
 
 for(i in 1:reps) {

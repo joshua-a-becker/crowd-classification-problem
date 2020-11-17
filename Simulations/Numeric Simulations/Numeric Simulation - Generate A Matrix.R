@@ -1,3 +1,10 @@
+################################################################################
+
+# This is the script that contains the functions to run the simulations by 
+# generating a matrix.
+
+################################################################################
+
 gen_A = function(N=100
                  , g_fun = function(N){graph.full(N)}
                  ) {

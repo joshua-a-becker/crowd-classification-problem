@@ -1,8 +1,24 @@
+################################################################################
+
+# This is the script to create the simulations for proposition 2.
+# THIS SHOULD BE RUN BEFORE ANYTHING ELSE
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Loading dependencies
 library(expm)
 library(tidyverse)
 
-source('Generate_A_Matrix.R')
+# Loading the simulation functions
+source('Simulations/Numeric Simulations/Numeric Simulation - Generate A Matrix.R')
 
+###########################
+# Running the simulations #
+###########################
 
 ### SET BELIEF DISTRIBUTION
 B_func = function(N){rnorm(N,0,1)};B_name="norm"
@@ -18,11 +34,11 @@ thresholds = cbind(
 
 ### RUN NUMERICAL CALCULATIONS 100 TIMES
 #outcomes = data.frame()
-filename = paste0("sims/numsim",sample(10000000,1),".csv")
+filename = paste0("Simulations/Numeric Simulations/numsim",sample(10000000,1),".csv")
 
-for(N in c(100,1000)) {
+for(i in 1:1000){
   for(R in c(10,3)) {
-    for(i in 1:1000){
+    for(N in c(100,1000)) {
       print(i)
       ### GENERATE A MATRIX
       A = gen_A(N)
