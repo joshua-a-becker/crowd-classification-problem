@@ -3,3 +3,4 @@ Thumbs.db
 *.RHistory
 Exclude/
 *.csv
+.Rproj.user/
