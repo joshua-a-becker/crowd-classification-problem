@@ -1,10 +1,27 @@
-### THIS SCRIPT MODELS THE WISDOM OF CROWDS WITH DISCRETE CHOICE
-### WE ASSUME ONE PARAMETER OF INDIVIDUAL BEHAVIOR:
-###    P(CHANGE | SOCIAL INFO)
-library(igraph)
+################################################################################
 
-source("../../dependencies.R")
-source('SimulationFunctions.R', echo=TRUE)
+# This is the script to create the simulations for proposition 1.
+# THIS SHOULD BE RUN BEFORE ANYTHING ELSE
+
+# This script models the wisdom of crowds with discrete choice.
+# We assume one parameter of individual behavior: P(CHANGE | SOCIAL INFO)
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Loading dependencies
+library(igraph)
+source("dependencies.R")
+
+# Loading the simulation functions
+source('Analysis/Proposition 1/Empirically Calibrated Simulations/SimulationFunctions.R', echo=TRUE)
+
+############################
+# Creating the simulations #
+############################
 
 outcomes = data.frame(  initial_accuracy=numeric()
                       , final_accuracy=numeric()
@@ -20,7 +37,7 @@ probs=seq(0,1,by=0.05)
 total = reps*length(probs)
 pb=txtProgressBar(0,total,style=3)
 
-filename = paste0("empirical_sim_",sample(10000000,1),".csv")
+filename = paste0("Analysis/Proposition 1/Empirically Calibrated Simulations/empirical_sim_",sample(10000000,1),".csv")
 
 
 for(i in 1:reps) {

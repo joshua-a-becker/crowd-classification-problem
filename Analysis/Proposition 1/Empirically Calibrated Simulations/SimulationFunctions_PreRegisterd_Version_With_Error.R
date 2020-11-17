@@ -1,8 +1,20 @@
-### THIS SCRIPT MODELS THE WISDOM OF CROWDS WITH DISCRETE CHOICE
-### WE ASSUME ONE PARAMETER OF INDIVIDUAL BEHAVIOR:
-###    P(CHANGE | SOCIAL INFO)
+################################################################################
 
+# This is the script that contains the functions to run the simulations.
+# (NOTE: THIS IS THE PREREGISTERED VERSION WITH AN ERROR)
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Loading dependencies
 require(igraph)
+
+########################
+# Simulation functions #
+########################
 
 fn_prob_change = function(p) {
   soc_info = round(p)

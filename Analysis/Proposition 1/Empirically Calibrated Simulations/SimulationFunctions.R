@@ -1,14 +1,22 @@
-### THIS SCRIPT MODELS THE WISDOM OF CROWDS WITH DISCRETE CHOICE
-### WE ASSUME ONE PARAMETER OF INDIVIDUAL BEHAVIOR:
-###    P(CHANGE | SOCIAL INFO)
+################################################################################
 
+# This is the script that contains the functions to run the simulations.
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Loading dependencies
 require(igraph)
 
-### FUNCTIONS ARE BASED ON THE 
-### EMPIRICAL DATA, SMOOTHED TO
-### PRODUCE A MONOTONIC FUNCTION
-### WITH NO 0 or 1 PROBABILITIES
-### (to avoid determiniate behavior)
+########################
+# Simulation functions #
+########################
+
+# Functions are based on the empirical data, smoothed to produced a monotonic 
+# function with no 0 or 1 probabilities (to avoid determinate behavior).
 
 fn_prob_change = function(p
                           , initially_correct=1  # setting defaults
