@@ -1,3 +1,11 @@
+################################################################################
+
+# These are the dependencies used throughout the analysis. This script will 
+# be sourced from other scripts.
+
+################################################################################
+
+### ggplot themes and settings
 require(ggplot2)
 
 neat_theme =   theme(panel.background=element_rect(fill="white", color="black", size=1.1), 

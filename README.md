@@ -8,3 +8,12 @@ Ned Smith (Kellogg School of Management, Northwestern Institute on Complex Syste
 # Contents
 
 This file contains experimental datasets, code for replication analysis, and code for simulation models.
+
+# Using these materials
+
+## R dependencies
+
+These are the following packages you need to install:
+```
+install.packages("ggplot2")
+```
