@@ -21,6 +21,7 @@ install.packages("tidyverse")
 install.packages("ggplot2")
 install.packages("igraph")
 install.packages("expm")
+install.packages("xtable")
 ```
 
 ## First steps
@@ -47,7 +48,18 @@ Now, navigate to *Simulations/Numeric Simulations/* and run the *Numeric Simulat
 
 ## Structure of the replication materials
 
+### Data 
+
+This is where all the experimental data files will be. Many are accessed from the internet, the only files kept in this repository are:
+- Crowd Classification Problem - Main Experiment Data.csv
+- Crowd Classification Problem - Pilot Data .csv
+- gurcay_data.csv 
+
+#### Main experimental data
+
+The main experimental data is provided by *Data/Crowd Classification Problem - Main Experiment Data.csv*. This data is accessed and prepped by *Analysis/Prep main experiment data.R*. This script that prepares the data is sourced by the scripts that need this data. This will produce **d** with the main experimental data, **ag** with the data aggregated over trials, and **empirical_sum** with the data summarized.
+
 ## Steps to replicate results in the order that they are presented in the paper
 
 1. Run *Analysis/Introduction and examples/Figure 1 and illustrative example.R* to generate Figure 1
-2. Run *Analysis/Proposition 1/Figure 2.R* to generate Figure 2 (need to have run the simulations first)
+1. Run *Analysis/Proposition 1/Figure 2.R* to generate Figure 2
