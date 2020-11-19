@@ -1,6 +1,6 @@
 ################################################################################
 
-# This is the script to create Figure 2
+# This is the script to create Figure A4
 
 ################################################################################
 
@@ -8,7 +8,7 @@
 # Preparation #
 ###############
 
-# Cleaning environment
+# Cleaning the environment
 rm(list=ls());gc()
 
 ################

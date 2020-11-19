@@ -2,15 +2,15 @@
 ### SET WORKING DIRECTORY TO SOURCE FILE LOCATION
 
 rm(list=ls());gc()
-source("Main Experiment - Prep Data.R")
+source("Analysis/Prep main experiment data.R")
 
 
 ### LOAD SIMULATION OUTCOMES
-fs=list.files("Empirically Calibrated Simulations")
+fs=list.files("Simulations/Empirically Calibrated Simulations")
 outcomes=lapply(
   fs[grepl("empirical_sim",fs)],
   FUN=function(x){
-    read.csv(paste0("Empirically Calibrated Simulations/",x))
+    read.csv(paste0("Simulations/Empirically Calibrated Simulations/",x))
   }) %>%
   do.call(rbind, .) %>%
   mutate(

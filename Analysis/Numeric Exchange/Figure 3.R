@@ -5,10 +5,10 @@ rm(list=ls());gc();
 library(readxl,warn.conflicts = F, quietly = T)
 library(httr,warn.conflicts = F, quietly = T)
 library(tidyverse)
-source("../dependencies.R")
+source("dependencies.R")
 
 
-d1 = read.csv("gurcay_data.csv", stringsAsFactors=F) %>% 
+d1 = read.csv("Data/gurcay_data.csv", stringsAsFactors=F) %>% 
   mutate(
     pre_influence = est1
   , post_influence = est2
@@ -39,11 +39,11 @@ d2 = read.csv(url("http://www.pnas.org/highwire/filestream/30360/field_highwire_
 
 
 lorenz_url = "http://www.pnas.org/highwire/filestream/606236/field_highwire_adjunct_files/1/sd01.xls"
-GET(lorenz_url, write_disk(tf <- "lorenz_et_al.xls", overwrite=T))
+GET(lorenz_url, write_disk(tf <- "Data/lorenz_et_al.xls", overwrite=T))
 # if(!file.exists("Exclude/lorenz_et_al.xls")) {
 #   GET(lorenz_url, write_disk(tf <- "Exclude/lorenz_et_al.xls", overwrite=T))  
 # }
-d3 <- read_excel("lorenz_et_al.xls") %>%
+d3 <- read_excel("Data/lorenz_et_al.xls") %>%
   mutate(
     pre_influence = E1
     , post_influence = E5
@@ -126,7 +126,7 @@ reanalysis = do.call(rbind, lapply(head(seq(0,1,by=0.01), -1)[-1], function(p) {
   )
 
 
-
+# This takes a bit of time
 reanalysis %>% 
   mutate(
     accuracy_round = round(pre_influence,01)
@@ -152,7 +152,7 @@ reanalysis %>%
   scale_x_continuous(lim=c(0,1))+
   neat_theme
 
-ggsave("Figure 3a.png", width=8.2, height=2.8)
+ggsave("Figures/Figure 3a.png", width=8.2, height=2.8)
 
 
 
@@ -211,7 +211,7 @@ d %>%
   ylim(0,1)+
   neat_theme
 
-ggsave("Figure 3b - Prop2_Predicted_by_Improvement.png", width=4.45, height=3)
+ggsave("Figures/Figure 3b - Prop2_Predicted_by_Improvement.png", width=4.45, height=3)
 
 
 
@@ -239,3 +239,4 @@ d %>%
                 , position=position_dodge(0.5)) +
   labs(x="Prediction: Grow", y="% Accurately Predicted") +
   ylim(0,1)
+

@@ -5,16 +5,14 @@ rm(list=ls());gc()
 
 ## useful tools
 library(tidyverse)
-source("../Dependencies.R")
+source("dependencies.R")
 
-
-
-fs=list.files("Simulation Outcomes")
+fs=list.files("Simulations/Numeric Simulations/")
 
 outcomes=lapply(
   fs[grepl("numsim",fs)],
   FUN=function(x){
-    read.csv(paste0("Simulation Outcomes/",x))
+    read.csv(paste0("Simulations/Numeric Simulations/",x))
   }) %>%
   do.call(rbind, .)
 
@@ -69,7 +67,7 @@ outcomes %>%
   neat_theme
 
 
-ggsave("Proposition 2c - Numeric Calculations.png"
+ggsave("Figures/Figure A2.png"
        , width=4, height=2.4)
 
 
