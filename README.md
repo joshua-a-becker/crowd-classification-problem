@@ -67,7 +67,7 @@ This is where all the figures generated will appear (none of them are kept on th
 
 1. Run ```Analysis/Introduction and examples/Figure 1 and illustrative example.R``` to generate Figure 1
 1. Run ```Analysis/Proposition 1/Figure 2.R``` to generate Figure 2
-1. Run ```Analysis/Proposition 1/Change in accuracy - Corrected version``` and ```Analysis/Proposition 1/Change in accuracy - Pre-registered version``` for the results about changes in accuracy for proposition 1
+1. For the results about changes in accuracy for proposition 1 see ```Analysis/Proposition 1/Change in accuracy - Corrected version.R``` and ```Analysis/Proposition 1/Change in accuracy - Pre-registered version.R``` 
 1. Run ```Analysis/Proposition 1/Table 2.R``` to generate Table 2
 1. To see statistics about answer revision (switching) for the main experiment see ```Analysis/Proposition 1/Revising answers.R```, and for the pilot experiment see XXXXXX
 1. For the discussion example statistics for the Binary Exchange, see ```Analysis/Proposition 1/Discussion Examples.R```
