@@ -36,8 +36,6 @@ ag = ag %>%
     initially_accurate = correct_1>=0.5
     , changed = change_13!=0
     , improve = change_13>0
-    , abs_maj = abs(1-correct_1)
-    , abs_maj_sq = abs_maj^2
   )
 
 # ag$initially_accurate is whether the 50% or more of the group members made
@@ -119,10 +117,3 @@ ANALYSIS_4a$p.value
 ### inaccurate)
 ANALYSIS_2 = prop.test(table(ag_changed$improve, ag_changed$initially_accurate))
 ANALYSIS_2$p.value
-
-#############################
-# Other preregistered tests #
-#############################
-
-ANALYSIS_5 = lm(abs(change_13) ~ abs_maj + abs_maj_sq, ag)
-summary(ANALYSIS_5)

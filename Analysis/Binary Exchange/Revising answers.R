@@ -50,5 +50,6 @@ myTable[2] / (myTable[1] + myTable[2])
 # % of participants initially accurate who revised their answer
 myTable[4] / (myTable[3] + myTable[4])
 
-# Comparison of levels of switching between the 
-wilcox.test(table(d$switch, d$initially_accurate))
+# Comparison of levels of switching between the initially accurate and the
+# initially inaccurate
+prop.test(table(d$switch, d$initially_accurate))$p.value

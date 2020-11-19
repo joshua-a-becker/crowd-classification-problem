@@ -38,8 +38,6 @@ ag = ag %>%
     initially_accurate = correct_1>=0.5
     , changed = change_13!=0
     , improve = change_13>0
-    , abs_maj = abs(1-correct_1)
-    , abs_maj_sq = abs_maj^2
   )
 
 # ag$initially_accurate is whether the 50% or more of the group members made
@@ -60,7 +58,7 @@ ag = ag %>%
 length(ag$change_13[!ag$initially_accurate])
 # Average change in accuracy of groups who were initially inaccurate:
 mean(ag$change_13[!ag$initially_accurate])
-# p value for Wilcoxon rank test of change in accuracy
+# p value for Wilcoxon rank test of change in accuracy due to initial inaccuracy
 ANALYSIS_3b = wilcox.test(ag$change_13[!ag$initially_accurate])  
 ANALYSIS_3b$p.value
 
@@ -69,7 +67,7 @@ ANALYSIS_3b$p.value
 length(ag$change_13[ag$initially_accurate])
 # Average change in accuracy of groups who were initially accurate:
 mean(ag$change_13[ag$initially_accurate])
-# p value for Wilcoxon rank test of change in accuracy
+# p value for Wilcoxon rank test of change in accuracy due to initial accuracy
 ANALYSIS_3a = wilcox.test(ag$change_13[ag$initially_accurate])
 ANALYSIS_3a$p.value
 

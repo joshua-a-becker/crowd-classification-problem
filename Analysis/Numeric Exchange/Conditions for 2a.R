@@ -76,6 +76,10 @@ d3 <- read_excel("Data/lorenz_et_al.xls") %>%
          select=c("trial","pre_influence","post_influence","truth","dataset","task")
   )
 
+######################
+# Preparing the data #
+######################
+
 # Binding the datasets together
 d = rbind(d1,d2,d3) %>%
   group_by(trial) %>%
@@ -106,16 +110,24 @@ ag = d %>%
 # Results #
 ###########
 
-# % of trials in which the mean becomes more accurate, 
+# Proportion of individuals who provide a response that falls between their 
+#group's initial median and final mean
+mean(ag$prop_btw)
+
+# Proportion of trials in which the mean becomes more accurate, 
 # reported across the three data sets
 ag %>% group_by(dataset) %>%
   summarize(improve=mean(improve))
 
-# Overall % of trials where the mean becomes more accurate
+# Overall proportion of trials where the mean becomes more accurate
 mean(ag$improve)
 
+# Proportion of trials where either M<C<θ or θ<C<M
+ag %$% mean(
+  (med<mu & mu<truth) | (med>mu & mu>truth)
+)
 
-mean(ag$prop_btw)
+
 
 ag %>%
   group_by(trial,dataset) %>%
@@ -137,8 +149,6 @@ ag %$% mean(truth<med & med<mu)
 # 24%
 ag %$% mean(med<truth & truth<mu)
 
-ag %$% mean(
-  (med<mu & mu<truth) | (med>mu & mu>truth)
-  )
+
 
 

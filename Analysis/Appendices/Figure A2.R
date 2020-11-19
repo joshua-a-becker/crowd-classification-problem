@@ -90,24 +90,3 @@ outcomes %>%
 # Saving the figure
 ggsave("Figures/Figure A2.png"
        , width=4, height=2.4)
-
-
-
-### See numeric results for those parameters with the 
-### worst predictability.
-outcomes %>%
-  group_by(  R
-             , N
-             , t_pct
-             , B_func
-  ) %>%
-  summarize(
-    correct=mean(correct)
-    , count=n()
-  ) %>% 
-  group_by(B_func, N, R) %>%
-  summarize(
-    min = min(correct)
-    , count = count[which.min(correct)]
-  ) %>%
-  subset(R==10)
