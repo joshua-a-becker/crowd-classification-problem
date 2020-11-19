@@ -1,11 +1,25 @@
-### TO USE:
-### SET WORKING DIRECTORY TO SOURCE FILE LOCATION
+################################################################################
 
+# This is the script for calculating the goodness of fit of the different models
+# for binary exchange
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Cleaning the environment
 rm(list=ls());gc()
+
+################
+# Loading data #
+################
+
+# Empirical data
 source("Analysis/Prep main experiment data.R")
 
-
-### LOAD SIMULATION OUTCOMES
+# Outcomes of the Empirically Calibrated Simulations
 fs=list.files("Simulations/Empirically Calibrated Simulations")
 outcomes=lapply(
   fs[grepl("empirical_sim",fs)],
@@ -20,9 +34,11 @@ outcomes=lapply(
     , maj_size = abs(0.5-initial_accuracy)
   )
 
+############
+# Analyses #
+############
 
-### SUMMARIZE THEORETICAL DATA
-
+# Summarize theoretical data
 model_sum = subset(outcomes, maj_size<0.5) %>%
   group_by(initial_accuracy, overfit) %>%
   summarize(
@@ -36,8 +52,7 @@ model_sum = subset(outcomes, maj_size<0.5) %>%
     , N=n()
   )
 
-
-
+# Lookup function
 lookup = function(x1, this_overfit){
   thisd=model_sum %>%
     subset(overfit==this_overfit)
@@ -52,39 +67,44 @@ ag = ag %>%
     , predict_prereg=lookup(correct_1, this_overfit=F)
   )
 
-
-### generate statistical models
+# generate statistical models
 naive_linear=lm(change_13 ~ correct_1>0.5, ag)
 poly_fit = loess(change_13 ~ correct_1, data=ag, span=0.9)
 
-### calculate total sum-of-squares for empirical data
+# calculate total sum-of-squares for empirical data
 SS_tot = sum((ag$change_13-mean(ag$change_13))^2)
 
-### calculate sum of squares for each model residual
+# calculate sum of squares for each model residual
 SS_res_prereg=sum((ag$predict_prereg-ag$change_13)^2)
 SS_res_overfit=sum((ag$predict_overfit-ag$change_13)^2)
 SS_res_linear=sum(((ag$change_13-naive_linear$fitted.values)^2))
 SS_res_poly=sum(((ag$change_13-poly_fit$fitted)^2))
 
-### calculate R2 for each model
+# calculate R2 for each model
 R2_linear = 1 - (SS_res_linear/SS_tot)
 R2_prereg = 1 - (SS_res_prereg/SS_tot)
 R2_overfit = 1 - (SS_res_overfit/SS_tot)
 R2_poly = 1 - (SS_res_poly/SS_tot)
 
+##########
+# Output #
+##########
 
-### R2
+### R2 for every model ###
 R2_linear
 R2_prereg
 R2_overfit
 R2_poly
 
-### MSE
+### MSE for every model ###
 SS_res_prereg
 SS_res_overfit
 SS_res_linear
 SS_res_poly
 
+######################
+# Plot of R2 and MSE #
+######################
 
 MSE = c(
   SS_res_linear

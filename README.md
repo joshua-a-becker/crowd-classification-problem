@@ -74,6 +74,9 @@ This is where all the figures generated will appear (none of them are kept on th
 1. Run ```Analysis/Binary Exchange/Figure 2.R``` to generate Figure 2
 1. For the results about changes in accuracy for Binary Exchange see ```Analysis/Binary Exchange/Change in accuracy - Corrected version.R``` and ```Analysis/Binary Exchange/Change in accuracy - Pre-registered version.R``` 
 1. Run ```Analysis/Binary Exchange/Table 2.R``` to generate Table 2
-1. For statistics about answer revision (switching) for the main experiment see ```Analysis/Binary Exchange/Revising answers.R```, and for the pilot experiment see XXXXXX
+1. For statistics about answer revision (switching) for the main experiment see ```Analysis/Binary Exchange/Revising answers.R```, and for the pilot experiment see ```Analysis/Appendices/Pilot Experiment/Pilot Experiment - Pre-Registered Analyses.R```
 1. For the discussion example statistics for the Binary Exchange, see ```Analysis/Binary Exchange/Discussion Examples.R```
 1. Run ```Analysis/Appendices/Figure A2.R``` to generate Figure A2
+1. For the goodness of fit of the different models, see ```Analysis/Appendices/Model Goodness of Fit.R```
+1. For the results of the pilot experiment, see ```Analysis/Appendices/Pilot Experiment/Pilot Experiment - Pre-Registered Analyses.R```
+1. Run ```Analysis/Appendices/Pilot Experiment/Pilot Experiment - Figure A3.R``` to generate Figure A3
