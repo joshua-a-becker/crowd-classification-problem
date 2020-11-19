@@ -8,7 +8,7 @@
 # Preparation #
 ###############
 
-# Cleaning environment
+# Cleaning the environment
 rm(list=ls());gc()
 
 ################
