@@ -80,3 +80,6 @@ This is where all the figures generated will appear (none of them are kept on th
 1. For the goodness of fit of the different models, see ```Analysis/Appendices/Model Goodness of Fit.R```
 1. For the results of the pilot experiment, see ```Analysis/Appendices/Pilot Experiment/Pilot Experiment - Pre-Registered Analyses.R```
 1. Run ```Analysis/Appendices/Pilot Experiment/Pilot Experiment - Figure A3.R``` to generate Figure A3
+1. Run ```Analysis/Appendices/Table A1.R``` to generate Table A1
+1. Run ```Analysis/Appendices/Figure A4.R``` to generate Figure A4
+1. Run ```Analysis/Appendices/Figure A5.R``` to generate Figure A5

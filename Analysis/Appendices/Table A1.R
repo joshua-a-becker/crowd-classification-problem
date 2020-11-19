@@ -1,30 +1,44 @@
-### TO USE:
-### SET WORKING DIRECTORY TO SOURCE FILE LOCATION
+################################################################################
 
+# This is the script to create Table A1
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Cleaning the environment
 rm(list=ls());gc();
+
+# Loading dependencies
 library(readxl,warn.conflicts = F, quietly = T)
 library(httr,warn.conflicts = F, quietly = T)
 library(tidyverse)
 source("dependencies.R")
 
+################
+# Loading data #
+################
 
+# Gurcay et al. 
 d1 = read.csv("Data/gurcay_data.csv", stringsAsFactors=F) %>% 
   mutate(
     pre_influence = est1
-  , post_influence = est2
-  , question = question.no
-  , trial=paste0("gurcay",group, "-",question)
-  , truth=true.values
-  , dataset="gurcay"
-) %>% 
+    , post_influence = est2
+    , question = question.no
+    , trial=paste0("gurcay",group, "-",question)
+    , truth=true.values
+    , dataset="gurcay"
+  ) %>% 
   subset(condition!="C" &
            (!is.na(pre_influence) & !is.na(post_influence)),
          select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
-
+# Becker et al.
 d2 = read.csv(url("http://www.pnas.org/highwire/filestream/30360/field_highwire_adjunct_files/1/pnas.1615978114.sd01.csv")
-             , stringsAsFactors=F) %>% 
+              , stringsAsFactors=F) %>% 
   mutate(
     pre_influence = response_1
     , post_influence = response_3
@@ -37,12 +51,9 @@ d2 = read.csv(url("http://www.pnas.org/highwire/filestream/30360/field_highwire_
          select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
-
+# Lorenz et al. 
 lorenz_url = "http://www.pnas.org/highwire/filestream/606236/field_highwire_adjunct_files/1/sd01.xls"
 GET(lorenz_url, write_disk(tf <- "Data/lorenz_et_al.xls", overwrite=T))
-# if(!file.exists("Exclude/lorenz_et_al.xls")) {
-#   GET(lorenz_url, write_disk(tf <- "Exclude/lorenz_et_al.xls", overwrite=T))  
-# }
 d3 <- read_excel("Data/lorenz_et_al.xls") %>%
   mutate(
     pre_influence = E1
@@ -64,21 +75,22 @@ d3 <- read_excel("Data/lorenz_et_al.xls") %>%
          select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
+######################
+# Preparing the data #
+######################
 
+### Binding the datasets together
 d = rbind( d1
-          ,d2
-          ,d3
-          ) %>%
+           ,d2
+           ,d3
+) %>%
   group_by(trial) %>%
   mutate(
-      mu1 = mean(pre_influence)
+    mu1 = mean(pre_influence)
     , mu2 = mean(post_influence)
     , improve = abs(mu2-truth) < abs(mu1-truth)
     , worse = abs(mu2-truth) > abs(mu1-truth)
   )
-
-
-
 
 ### PROPORTION CORRECT SOME GIVEN THRESHOLD VALUE T
 correctAtT = function(dist, t, truth) {
@@ -95,7 +107,6 @@ correctAtP = function(dist1, dist2, p, truth) {
   t = distAsPercentile(dist1, p)
   correctAtT(dist2, t, truth)
 }
-
 
 ### CRAWL ALONG ALL THE POSSIBLE THRESHOLD VALUES
 ### AND MEASURE OUTCOMES FOR EACH DATASET AND QUESTION
@@ -126,32 +137,34 @@ reanalysis = do.call(rbind, lapply(head(seq(0,1,by=0.01), -1)[-1], function(p) {
           , change = post_influence - pre_influence
   )
 
+### ACCURACY ACROSS FULL RANGE
+accuracy=function(x){
+  x %>%
+    mutate(
+      p=round(p*100) # avoid FLOP errors
+    ) %>%
+    summarize(
+      total = mean(predict_amplify==amplify)
+      , acc_01 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=1)])
+      , acc_05 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=5)])
+      , acc_10 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=10)])
+    )
+}
 
-# This takes a bit of time
-reanalysis %>% 
-  mutate(
-    accuracy_round = round(pre_influence,01)
-  ) %>%
-  group_by(accuracy_round, predict_amplify#, dataset
-           ) %>%
+####################
+# Making the table #
+####################
+
+# TABLE A1
+reanalysis %>%
+  group_by(dataset,trial) %>%
+  accuracy %>%
+  group_by(dataset) %>%
   summarize(
-    pre_influence = mean(pre_influence)
-    , post_influence = mean(post_influence)
-    , change=mean(change)
-  ) %>%
-  ggplot(aes(x=accuracy_round, y=change, color=predict_amplify)) + 
-  geom_line() +
-  #facet_wrap(.~dataset, scales="free_y") +
-  scale_color_manual(values = c("red","black")) +
-  labs(y="Change in Accuracy\n(Positive = More Accurate)", x="Initial Accuracy", color="") +
-  guides(color=F) +
-  #scale_y_continuous(lim=c(-0.11,0.15))+
-  geom_hline(yintercept=0, linetype="dashed") +
-  geom_vline(xintercept=0.5, linetype="dashed") +
-  theme(panel.spacing = unit(2, "lines")) +
-  scale_y_continuous(lim=c(-0.5,0.5))+
-  scale_x_continuous(lim=c(0,1))+
-  neat_theme
-
-ggsave("Figures/Figure 3a.png", width=8.2, height=2.8)
-
+    stderr = t.test(total)$stderr
+    , total = mean(total)
+    , acc_01 = mean(acc_01)
+    , acc_05 = mean(acc_05)
+    , acc_10 = mean(acc_10)
+    , N=n()
+  )

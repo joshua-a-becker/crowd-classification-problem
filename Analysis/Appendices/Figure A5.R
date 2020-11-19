@@ -1,13 +1,27 @@
-### TO USE:
-### SET WORKING DIRECTORY TO SOURCE FILE LOCATION
+################################################################################
 
+# This is the script to create Figure A5
+
+################################################################################
+
+###############
+# Preparation #
+###############
+
+# Cleaning the environment
 rm(list=ls());gc();
+
+# Loading dependencies
 library(readxl,warn.conflicts = F, quietly = T)
 library(httr,warn.conflicts = F, quietly = T)
 library(tidyverse)
 source("dependencies.R")
 
+################
+# Loading data #
+################
 
+# Gurcay et al. 
 d1 = read.csv("Data/gurcay_data.csv", stringsAsFactors=F) %>% 
   mutate(
     pre_influence = est1
@@ -22,7 +36,7 @@ d1 = read.csv("Data/gurcay_data.csv", stringsAsFactors=F) %>%
          select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
-
+# Becker et al.
 d2 = read.csv(url("http://www.pnas.org/highwire/filestream/30360/field_highwire_adjunct_files/1/pnas.1615978114.sd01.csv")
              , stringsAsFactors=F) %>% 
   mutate(
@@ -37,12 +51,9 @@ d2 = read.csv(url("http://www.pnas.org/highwire/filestream/30360/field_highwire_
          select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
-
+# Lorenz et al. 
 lorenz_url = "http://www.pnas.org/highwire/filestream/606236/field_highwire_adjunct_files/1/sd01.xls"
 GET(lorenz_url, write_disk(tf <- "Data/lorenz_et_al.xls", overwrite=T))
-# if(!file.exists("Exclude/lorenz_et_al.xls")) {
-#   GET(lorenz_url, write_disk(tf <- "Exclude/lorenz_et_al.xls", overwrite=T))  
-# }
 d3 <- read_excel("Data/lorenz_et_al.xls") %>%
   mutate(
     pre_influence = E1
@@ -64,7 +75,11 @@ d3 <- read_excel("Data/lorenz_et_al.xls") %>%
          select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
+######################
+# Preparing the data #
+######################
 
+### Binding the datasets together
 d = rbind( d1
           ,d2
           ,d3
@@ -76,9 +91,6 @@ d = rbind( d1
     , improve = abs(mu2-truth) < abs(mu1-truth)
     , worse = abs(mu2-truth) > abs(mu1-truth)
   )
-
-
-
 
 ### PROPORTION CORRECT SOME GIVEN THRESHOLD VALUE T
 correctAtT = function(dist, t, truth) {
@@ -95,7 +107,6 @@ correctAtP = function(dist1, dist2, p, truth) {
   t = distAsPercentile(dist1, p)
   correctAtT(dist2, t, truth)
 }
-
 
 ### CRAWL ALONG ALL THE POSSIBLE THRESHOLD VALUES
 ### AND MEASURE OUTCOMES FOR EACH DATASET AND QUESTION
@@ -126,32 +137,50 @@ reanalysis = do.call(rbind, lapply(head(seq(0,1,by=0.01), -1)[-1], function(p) {
           , change = post_influence - pre_influence
   )
 
-
-# This takes a bit of time
-reanalysis %>% 
+### ACCURACY ACROSS FULL RANGE
+accuracy=function(x){
+  x %>%
   mutate(
-    accuracy_round = round(pre_influence,01)
+    p=round(p*100) # avoid FLOP errors
   ) %>%
-  group_by(accuracy_round, predict_amplify#, dataset
-           ) %>%
   summarize(
-    pre_influence = mean(pre_influence)
-    , post_influence = mean(post_influence)
-    , change=mean(change)
+      total = mean(predict_amplify==amplify)
+    , acc_01 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=1)])
+    , acc_05 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=5)])
+    , acc_10 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=10)])
+  )
+}
+
+#####################
+# Making the figure #
+#####################
+
+# Making the figure
+d %>% 
+  group_by(trial) %>%
+  summarize(improve=unique(improve)) %>%
+  merge(reanalysis, by="trial") %>%
+  group_by(dataset,trial,improve) %>%
+  accuracy %>%
+  group_by(improve, dataset) %>%
+  summarize(
+      stderr = t.test(total)$stderr
+    , conf1 = t.test(total, conf.level=0.99)$conf.int[1]
+    , conf2 = t.test(total, conf.level=0.99)$conf.int[2]
+    , total = mean(total)
+    , acc_01 = mean(acc_01)
+    , acc_05 = mean(acc_05)
+    , acc_10 = mean(acc_10)
+    , N=n()
   ) %>%
-  ggplot(aes(x=accuracy_round, y=change, color=predict_amplify)) + 
-  geom_line() +
-  #facet_wrap(.~dataset, scales="free_y") +
-  scale_color_manual(values = c("red","black")) +
-  labs(y="Change in Accuracy\n(Positive = More Accurate)", x="Initial Accuracy", color="") +
-  guides(color=F) +
-  #scale_y_continuous(lim=c(-0.11,0.15))+
-  geom_hline(yintercept=0, linetype="dashed") +
-  geom_vline(xintercept=0.5, linetype="dashed") +
-  theme(panel.spacing = unit(2, "lines")) +
-  scale_y_continuous(lim=c(-0.5,0.5))+
-  scale_x_continuous(lim=c(0,1))+
+  mutate(improve=ifelse(improve,"Mean\nImproved","Mean\nWorse")) %>%
+  ggplot(aes(x=improve, shape=dataset,y=total)) +
+  geom_point(position=position_dodge(0.5)) +
+  geom_errorbar(aes(ymin=conf1, ymax=conf2), width=0
+                , position=position_dodge(0.5)) +
+  labs(x="", y="% Consistent w/ Model") +
+  ylim(0,1)+
   neat_theme
 
-ggsave("Figures/Figure 3a.png", width=8.2, height=2.8)
-
+# saving the figure
+ggsave("Figures/Figure A5.png", width=4.45, height=3)
