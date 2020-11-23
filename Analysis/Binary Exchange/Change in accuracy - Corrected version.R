@@ -4,8 +4,8 @@
 # proposition 1: Binary Exchange
 
 # NOTE: This is the corrected version of the analysis where the group that 
-# is split in terms of initial accuracy (50% correct) is considered considered 
-# in a category of its own ("split"; i.e., not initially accurate) . In the 
+# is split in terms of initial accuracy (50% correct) is considered 
+# in a category of its own ("split"; i.e., not initially accurate). In the 
 # pre-registered version of this script, this group is considered as 
 # "initially accurate".
 
@@ -88,7 +88,7 @@ ag_changed <- subset(ag, changed)
 # Whether initially inaccurate groups became more accurate if they changed
 # in accuracy
 table(ag_changed$improve[!ag_changed$initially_accurate])
-# % of these groups
+# proportion of these groups
 prop.table(table(ag_changed$improve[!ag_changed$initially_accurate]))
 #Average change of groups initially inaccurate that improved
 mean(subset(ag_changed, improve & !initially_accurate)$change_13)
@@ -103,7 +103,7 @@ ANALYSIS_4b$p.value
 # Whether initially accurate groups became more accurate if they changed
 # in accuracy
 table(ag_changed$improve[ag_changed$initially_accurate])
-# % of these groups
+# proportion of these groups
 prop.table(table(ag_changed$improve[ag_changed$initially_accurate]))
 #Average change of groups initially accurate that improved
 mean(subset(ag_changed, improve & initially_accurate)$change_13)

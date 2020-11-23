@@ -113,7 +113,7 @@ ag = d %>%
 ###########
 
 # Proportion of individuals who provide a response that falls between their 
-#group's initial median and final mean
+# group's initial median and final mean
 mean(ag$prop_btw)
 
 # Proportion of trials in which the mean becomes more accurate, 

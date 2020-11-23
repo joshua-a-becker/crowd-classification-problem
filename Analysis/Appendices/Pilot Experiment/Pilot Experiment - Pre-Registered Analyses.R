@@ -64,7 +64,7 @@ ANALYSIS_1_SUM$coefficients[11]
 
 # P value of whether initial accuracy predicts likelihood of switching 
 # (whilst controlling for the condition in which participants were 
-# (% of other players who agreed))
+# - % of other players who agreed; namely, observed disagreement)
 ANALYSIS_2_SUM$coefficients[11]
 
 # P values of whether participants were more likely to switch if the majority
@@ -74,9 +74,9 @@ ANALYSIS_1_SUM$coefficients[12]
 # Proportions of participants switching or not when majority disagrees or not
 switch_majority_table <- table(d$switch, d$majority_disagree)
 switch_majority_table
-# % of participants who switch when majority disagrees
+# proportion of participants who switch when majority disagrees
 switch_majority_table[4] / (switch_majority_table[3] + switch_majority_table[4])
-# % of participants who switch when majority agrees
+# proportion of participants who switch when majority agrees
 switch_majority_table[2] / (switch_majority_table[1] + switch_majority_table[2])
 
 # Participants who switch when 50% of confederates agree
