@@ -1,6 +1,6 @@
 ################################################################################
 
-# This is the script to create Figure A5
+# This is the script to obtain the model fit across the three datasets
 
 ################################################################################
 
@@ -43,9 +43,9 @@ correctAtP = function(dist1, dist2, p, truth) {
   correctAtT(dist2, t, truth)
 }
 
+
 ### CRAWL ALONG ALL THE POSSIBLE THRESHOLD VALUES
 ### AND MEASURE OUTCOMES FOR EACH DATASET AND QUESTION
-# (This takes some time) #
 reanalysis = do.call(rbind, lapply(head(seq(0,1,by=0.01), -1)[-1], function(p) {
   do.call(rbind, lapply(unique(d$trial), function(x){
     samp = subset(d, trial==x)
@@ -72,50 +72,30 @@ reanalysis = do.call(rbind, lapply(head(seq(0,1,by=0.01), -1)[-1], function(p) {
           , change = post_influence - pre_influence
   )
 
-### ACCURACY ACROSS FULL RANGE
+###########
+# Results #
+###########
+
+### Function to get accuracy across the full range
 accuracy=function(x){
   x %>%
-  mutate(
-    p=round(p*100) # avoid FLOP errors
-  ) %>%
-  summarize(
+    mutate(
+      p=round(p*100) # avoid FLOP errors
+    ) %>%
+    summarize(
       total = mean(predict_amplify==amplify)
-    , acc_01 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=1)])
-    , acc_05 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=5)])
-    , acc_10 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=10)])
-  )
+      , acc_01 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=1)])
+      , acc_05 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=5)])
+      , acc_10 = mean((predict_amplify==amplify)[p %in% seq(0,100,by=10)])
+    )
 }
 
-#####################
-# Making the figure #
-#####################
-
-# Making the figure
-d %>% 
-  group_by(trial) %>%
-  summarize(improve=unique(improve)) %>%
-  merge(reanalysis, by="trial") %>%
-  group_by(dataset,trial,improve) %>%
+### Accuracy model fit across the three datasets
+reanalysis %>%
+  group_by(dataset,trial) %>%
   accuracy %>%
-  group_by(improve, dataset) %>%
+  group_by(dataset) %>%
   summarize(
-      stderr = t.test(total)$stderr
-    , conf1 = t.test(total, conf.level=0.99)$conf.int[1]
-    , conf2 = t.test(total, conf.level=0.99)$conf.int[2]
+    stderr = t.test(total)$stderr
     , total = mean(total)
-    , acc_01 = mean(acc_01)
-    , acc_05 = mean(acc_05)
-    , acc_10 = mean(acc_10)
-    , N=n()
-  ) %>%
-  mutate(improve=ifelse(improve,"Mean\nImproved","Mean\nWorse")) %>%
-  ggplot(aes(x=improve, shape=dataset,y=total)) +
-  geom_point(position=position_dodge(0.5)) +
-  geom_errorbar(aes(ymin=conf1, ymax=conf2), width=0
-                , position=position_dodge(0.5)) +
-  labs(x="", y="% Consistent w/ Model") +
-  ylim(0,1)+
-  neat_theme
-
-# saving the figure
-ggsave("Figures/Figure A5.png", width=4.45, height=3)
+  )

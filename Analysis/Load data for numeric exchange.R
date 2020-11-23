@@ -1,6 +1,6 @@
 ################################################################################
 
-# This is the script for the main results concerning the numeric exchange
+# This is the script to load the three datasets for the numeric exchange
 
 ################################################################################
 
@@ -15,7 +15,6 @@ rm(list=ls());gc();
 library(readxl,warn.conflicts = F, quietly = T)
 library(httr,warn.conflicts = F, quietly = T)
 library(tidyverse)
-library(magrittr)
 source("dependencies.R")
 
 ################
@@ -28,14 +27,13 @@ d1 = read.csv("Data/gurcay_data.csv", stringsAsFactors=F) %>%
     pre_influence = est1
     , post_influence = est2
     , question = question.no
-    , task=question
     , trial=paste0("gurcay",group, "-",question)
     , truth=true.values
     , dataset="gurcay"
   ) %>% 
   subset(condition!="C" &
            (!is.na(pre_influence) & !is.na(post_influence)),
-         select=c("trial","pre_influence","post_influence","truth","dataset","task")
+         select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
 # Becker et al.
@@ -44,12 +42,13 @@ d2 = read.csv(url("http://www.pnas.org/highwire/filestream/30360/field_highwire_
   mutate(
     pre_influence = response_1
     , post_influence = response_3
-    , trial=paste0("becker", group_number, "-",task)
+    , question = task
+    , trial=paste0("becker", group_number, "-",question)
     , dataset="becker"
   ) %>% 
   subset(network=="Decentralized" &
            (!is.na(pre_influence) & !is.na(post_influence)),
-         select=c("trial","pre_influence","post_influence","truth","dataset","task")
+         select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
 # Lorenz et al. 
@@ -73,82 +72,18 @@ d3 <- read_excel("Data/lorenz_et_al.xls") %>%
   ) %>% 
   subset(network=="Decentralized" &
            (!is.na(pre_influence) & !is.na(post_influence)),
-         select=c("trial","pre_influence","post_influence","truth","dataset","task")
+         select=c("trial","pre_influence","post_influence","truth","dataset")
   )
 
-######################
-# Preparing the data #
-######################
-
-# Binding the datasets together
-d = rbind(d1,d2,d3) %>%
+### Binding the datasets together
+d = rbind( d1
+           ,d2
+           ,d3
+) %>%
   group_by(trial) %>%
   mutate(
-      mu1 = mean(pre_influence)
+    mu1 = mean(pre_influence)
     , mu2 = mean(post_influence)
-    , med1 = median(pre_influence)
     , improve = abs(mu2-truth) < abs(mu1-truth)
     , worse = abs(mu2-truth) > abs(mu1-truth)
   )
-
-# Preparing the data, grouped across trial, dataset, and task
-ag = d %>% 
-  group_by(trial, dataset,task) %>%
-  summarize(
-      truth=unique(truth)
-    , med=unique(med1)
-    , mu=unique(mu1)
-    , C = unique(mu2)
-    , med_under = ifelse(med<truth, "Med U","Med Ov")
-    , mu_under = ifelse(mu2<truth, "Mu U","Mu Ov")
-    , med_less = ifelse(med<mu2, "M<u","u>M")
-    , prop_btw = mean( (truth<pre_influence&pre_influence<C) | (C<pre_influence&pre_influence<truth) )
-    , improve=unique(improve)
-  )
-
-###########
-# Results #
-###########
-
-# Proportion of individuals who provide a response that falls between their 
-#group's initial median and final mean
-mean(ag$prop_btw)
-
-# Proportion of trials in which the mean becomes more accurate, 
-# reported across the three data sets
-ag %>% group_by(dataset) %>%
-  summarize(improve=mean(improve))
-
-# Overall proportion of trials where the mean becomes more accurate
-mean(ag$improve)
-
-# Proportion of trials where either M<C<θ or θ<C<M
-ag %$% mean(
-  (med<mu & mu<truth) | (med>mu & mu>truth)
-)
-
-
-
-ag %>%
-  group_by(trial,dataset) %>%
-  summarize(prop=mean(prop_btw)) %>%
-  group_by(dataset) %>%
-  summarize(prop=mean(prop))
-
-table(ag$med_under, ag$mu_under, ag$med_less)
-
-# M < ?? < ??
-# 28%
-ag %$% mean(med<mu & mu<truth)
-
-# ?? < M < ??
-# 24%
-ag %$% mean(truth<med & med<mu)
-
-# M < ?? < ??
-# 24%
-ag %$% mean(med<truth & truth<mu)
-
-
-
-
