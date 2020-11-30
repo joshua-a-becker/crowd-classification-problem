@@ -28,8 +28,6 @@ outcomes=lapply(
   }) %>%
   do.call(rbind, .)
 
-table(outcomes$R, outcomes$N)
-
 #######################################################
 # Creating variables from the data to make the figure #
 #######################################################
@@ -63,7 +61,6 @@ names(N.labs) <- c("N=100", "N=1000")
 outcomes %>% 
   group_by(t_pct, pred_enhance) %>%
   subset(B_func=="norm") %>%
-  subset(R==10) %>%
   group_by(  R
              , t_pct
              , N
