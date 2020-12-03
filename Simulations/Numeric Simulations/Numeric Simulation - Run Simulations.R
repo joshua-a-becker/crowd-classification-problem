@@ -12,9 +12,10 @@
 # Loading dependencies
 library(expm)
 library(tidyverse)
+library(here)
 
 # Loading the simulation functions
-source('Simulations/Numeric Simulations/Numeric Simulation - Generate A Matrix.R')
+source(here('Simulations/Numeric Simulations/Numeric Simulation - Generate A Matrix.R'))
 
 ###########################
 # Running the simulations #
@@ -30,7 +31,7 @@ thresholds = cbind(
   , quantile(B_func(10000), rng)
 )
 
-filename = paste0("Simulations/Numeric Simulations/numsim",sample(10000000,1),".csv")
+filename = here(paste0("Simulations/Numeric Simulations/numsim",sample(10000000,1),".csv"))
 
 for(i in 1:10000){
   for(R in c(10)) {

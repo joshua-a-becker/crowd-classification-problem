@@ -25,6 +25,7 @@ install.packages("xtable")
 install.packages("readxl")
 install.packages("httr")
 install.packages("magrittr")
+install.packages("here")
 ```
 
 ## First steps
