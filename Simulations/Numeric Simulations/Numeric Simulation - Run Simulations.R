@@ -31,8 +31,13 @@ thresholds = cbind(
   , quantile(B_func(10000), rng)
 )
 
+### Save output as it's generated in case we get interrupted
 filename = here(paste0("Simulations/Numeric Simulations/numsim",sample(10000000,1),".csv"))
 
+### fix randomizaiton for replication
+set.seed(42)
+
+### run 10k times!
 for(i in 1:10000){
   for(R in c(10)) {
     for(N in c(100,1000)) {
