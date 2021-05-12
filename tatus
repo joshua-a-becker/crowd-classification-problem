@@ -1,0 +1,66 @@
+[1mdiff --git a/Analysis/Binary Exchange/Change in accuracy - Corrected version.R b/Analysis/Binary Exchange/Change in accuracy - Corrected version.R[m
+[1mindex 57829a4..dd9fe32 100644[m
+[1m--- a/Analysis/Binary Exchange/Change in accuracy - Corrected version.R[m	
+[1m+++ b/Analysis/Binary Exchange/Change in accuracy - Corrected version.R[m	
+[36m@@ -35,7 +35,7 @@[m [msource("Analysis/Prep main experiment data.R")[m
+ ag = ag %>%[m
+   subset(correct_1!=0.5) %>%[m
+   mutate([m
+[31m-    initially_accurate = correct_1>=0.5[m
+[32m+[m[32m    initially_accurate = correct_1>0.5[m
+     , changed = change_13!=0[m
+     , improve = change_13>0[m
+   )[m
+[36m@@ -90,10 +90,8 @@[m [mag_changed <- subset(ag, changed)[m
+ table(ag_changed$improve[!ag_changed$initially_accurate])[m
+ # proportion of these groups[m
+ prop.table(table(ag_changed$improve[!ag_changed$initially_accurate]))[m
+[31m-#Average change of groups initially inaccurate that improved[m
+[31m-mean(subset(ag_changed, improve & !initially_accurate)$change_13)[m
+[31m-#Average change of groups initially inaccurate that did not improved[m
+[31m-mean(subset(ag_changed, !improve & !initially_accurate)$change_13)[m
+[32m+[m[32m#Average change of groups initially inaccurate[m[41m [m
+[32m+[m[32mmean(subset(ag_changed, !initially_accurate)$change_13)[m
+ # p value for proportion test of number of groups initially inaccurate that[m
+ # improved in accuracy[m
+ ANALYSIS_4b = prop.test(table(ag_changed$improve[!ag_changed$initially_accurate]))[m
+[36m@@ -111,7 +109,8 @@[m [mmean(subset(ag_changed, improve & initially_accurate)$change_13)[m
+ mean(subset(ag_changed, !improve & initially_accurate)$change_13)[m
+ # p value for proportion test of number of groups initially inaccurate that[m
+ # improved in accuracy[m
+[31m-ANALYSIS_4a = prop.test(table(ag_changed$improve[ag_changed$initially_accurate]))[m
+[32m+[m[32mx=n=sum(ag_changed$improve[ag_changed$initially_accurate])[m
+[32m+[m[32mANALYSIS_4a = prop.test(x, n)[m
+ ANALYSIS_4a$p.value[m
+ [m
+ ### p value for proportion test of the difference in proportion of groups [m
+[1mdiff --git a/Analysis/Binary Exchange/Change in accuracy - Pre-Registered version.R b/Analysis/Binary Exchange/Change in accuracy - Pre-Registered version.R[m
+[1mindex 402b14b..764ee0f 100644[m
+[1m--- a/Analysis/Binary Exchange/Change in accuracy - Pre-Registered version.R[m	
+[1m+++ b/Analysis/Binary Exchange/Change in accuracy - Pre-Registered version.R[m	
+[36m@@ -88,10 +88,8 @@[m [mag_changed <- subset(ag, changed)[m
+ table(ag_changed$improve[!ag_changed$initially_accurate])[m
+ # propotion of these groups[m
+ prop.table(table(ag_changed$improve[!ag_changed$initially_accurate]))[m
+[31m-#Average change of groups initially inaccurate that improved[m
+[31m-mean(subset(ag_changed, improve & !initially_accurate)$change_13)[m
+[31m-#Average change of groups initially inaccurate that did not improved[m
+[31m-mean(subset(ag_changed, !improve & !initially_accurate)$change_13)[m
+[32m+[m[32m#Average change of groups initially inaccurate[m[41m [m
+[32m+[m[32mmean(subset(ag_changed, !initially_accurate)$change_13)[m
+ # p value for proportion test of number of groups initially inaccurate that[m
+ # improved in accuracy[m
+ ANALYSIS_4b = prop.test(table(ag_changed$improve[!ag_changed$initially_accurate]))[m
+[36m@@ -103,10 +101,8 @@[m [mANALYSIS_4b$p.value[m
+ table(ag_changed$improve[ag_changed$initially_accurate])[m
+ # propotion of these groups[m
+ prop.table(table(ag_changed$improve[ag_changed$initially_accurate]))[m
+[31m-#Average change of groups initially accurate that improved[m
+[31m-mean(subset(ag_changed, improve & initially_accurate)$change_13)[m
+[31m-#Average change of groups initially accurate that did not improved[m
+[31m-mean(subset(ag_changed, !improve & initially_accurate)$change_13)[m
+[32m+[m[32m#Average change of groups initially accurate[m[41m [m
+[32m+[m[32mmean(subset(ag_changed, initially_accurate)$change_13)[m
+ # p value for proportion test of number of groups initially inaccurate that[m
+ # improved in accuracy[m
+ ANALYSIS_4a = prop.test(table(ag_changed$improve[ag_changed$initially_accurate]))[m

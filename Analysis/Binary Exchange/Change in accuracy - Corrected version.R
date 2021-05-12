@@ -35,7 +35,7 @@ source("Analysis/Prep main experiment data.R")
 ag = ag %>%
   subset(correct_1!=0.5) %>%
   mutate(
-    initially_accurate = correct_1>=0.5
+    initially_accurate = correct_1>0.5
     , changed = change_13!=0
     , improve = change_13>0
   )
@@ -90,10 +90,8 @@ ag_changed <- subset(ag, changed)
 table(ag_changed$improve[!ag_changed$initially_accurate])
 # proportion of these groups
 prop.table(table(ag_changed$improve[!ag_changed$initially_accurate]))
-#Average change of groups initially inaccurate that improved
-mean(subset(ag_changed, improve & !initially_accurate)$change_13)
-#Average change of groups initially inaccurate that did not improved
-mean(subset(ag_changed, !improve & !initially_accurate)$change_13)
+#Average change of groups initially inaccurate 
+mean(subset(ag_changed, !initially_accurate)$change_13)
 # p value for proportion test of number of groups initially inaccurate that
 # improved in accuracy
 ANALYSIS_4b = prop.test(table(ag_changed$improve[!ag_changed$initially_accurate]))
@@ -111,7 +109,8 @@ mean(subset(ag_changed, improve & initially_accurate)$change_13)
 mean(subset(ag_changed, !improve & initially_accurate)$change_13)
 # p value for proportion test of number of groups initially inaccurate that
 # improved in accuracy
-ANALYSIS_4a = prop.test(table(ag_changed$improve[ag_changed$initially_accurate]))
+x=n=sum(ag_changed$improve[ag_changed$initially_accurate])
+ANALYSIS_4a = prop.test(x, n)
 ANALYSIS_4a$p.value
 
 ### p value for proportion test of the difference in proportion of groups 

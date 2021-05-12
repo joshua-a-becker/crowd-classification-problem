@@ -3,10 +3,11 @@
 # This is the script for the main results about changes in accuracy for 
 # proposition 1: Binary Exchange
 
-# NOTE: This is the preregistered version of the analysis where the group that 
-# is split in terms of initial accuracy (50% correct) is considered as 
-# "initially accurate". In the corrected version of this script, this group is 
-# dropped because considered in a category of its own ("split").
+# NOTE: This is the corrected version of the analysis where the group that 
+# is split in terms of initial accuracy (50% correct) is considered 
+# in a category of its own ("split"; i.e., not initially accurate). In the 
+# pre-registered version of this script, this group is considered as 
+# "initially accurate".
 
 ################################################################################
 
@@ -30,8 +31,9 @@ source("Analysis/Prep main experiment data.R")
 # Preparing variables #
 #######################
 
-# Creating variables for the analysis
+# Creating variables for the analysis (and taking out the split group)
 ag = ag %>%
+  subset(correct_1!=0.5) %>%
   mutate(
     initially_accurate = correct_1>=0.5
     , changed = change_13!=0
@@ -56,7 +58,7 @@ ag = ag %>%
 length(ag$change_13[!ag$initially_accurate])
 # Average change in accuracy of groups who were initially inaccurate:
 mean(ag$change_13[!ag$initially_accurate])
-# p value for Wilcoxon rank test of change in accuracy
+# p value for Wilcoxon rank test of change in accuracy due to initial inaccuracy
 ANALYSIS_3b = wilcox.test(ag$change_13[!ag$initially_accurate])  
 ANALYSIS_3b$p.value
 
@@ -65,7 +67,7 @@ ANALYSIS_3b$p.value
 length(ag$change_13[ag$initially_accurate])
 # Average change in accuracy of groups who were initially accurate:
 mean(ag$change_13[ag$initially_accurate])
-# p value for Wilcoxon rank test of change in accuracy
+# p value for Wilcoxon rank test of change in accuracy due to initial accuracy
 ANALYSIS_3a = wilcox.test(ag$change_13[ag$initially_accurate])
 ANALYSIS_3a$p.value
 
@@ -86,10 +88,12 @@ ag_changed <- subset(ag, changed)
 # Whether initially inaccurate groups became more accurate if they changed
 # in accuracy
 table(ag_changed$improve[!ag_changed$initially_accurate])
-# propotion of these groups
+# proportion of these groups
 prop.table(table(ag_changed$improve[!ag_changed$initially_accurate]))
-#Average change of groups initially inaccurate 
-mean(subset(ag_changed, !initially_accurate)$change_13)
+#Average change of groups initially inaccurate that improved
+mean(subset(ag_changed, improve & !initially_accurate)$change_13)
+#Average change of groups initially inaccurate that did not improved
+mean(subset(ag_changed, !improve & !initially_accurate)$change_13)
 # p value for proportion test of number of groups initially inaccurate that
 # improved in accuracy
 ANALYSIS_4b = prop.test(table(ag_changed$improve[!ag_changed$initially_accurate]))
@@ -99,13 +103,16 @@ ANALYSIS_4b$p.value
 # Whether initially accurate groups became more accurate if they changed
 # in accuracy
 table(ag_changed$improve[ag_changed$initially_accurate])
-# propotion of these groups
+# proportion of these groups
 prop.table(table(ag_changed$improve[ag_changed$initially_accurate]))
-#Average change of groups initially accurate 
-mean(subset(ag_changed, initially_accurate)$change_13)
+#Average change of groups initially accurate that improved
+mean(subset(ag_changed, improve & initially_accurate)$change_13)
+#Average change of groups initially accurate that did not improved
+mean(subset(ag_changed, !improve & initially_accurate)$change_13)
 # p value for proportion test of number of groups initially inaccurate that
 # improved in accuracy
-ANALYSIS_4a = prop.test(table(ag_changed$improve[ag_changed$initially_accurate]))
+x=n=sum(ag_changed$improve[ag_changed$initially_accurate])
+ANALYSIS_4a = prop.test(x, n)
 ANALYSIS_4a$p.value
 
 ### p value for proportion test of the difference in proportion of groups 
