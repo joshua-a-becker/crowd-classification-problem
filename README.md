@@ -1,9 +1,11 @@
 # Replication materials for:  The Crowd Classification Problem
-Joshua Becker (Kellogg School of Management, Northwestern Institute on Complex Systems, Northwestern University) 
+Joshua Becker (UCL School of Management, University College London) 
 
-Douglas Guilbeault (Annenberg School of Communication, University of Pennsylvania) 
+Douglas Guilbeault (Haas School of Business, University of California Berkeley) 
 
 Ned Smith (Kellogg School of Management, Northwestern Institute on Complex Systems, Northwestern University) 
+
+MANY THANKS to Samuel Dupret for assistance with preparing this replication materials.
 
 # Contents
 
